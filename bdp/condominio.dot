@@ -1,7 +1,7 @@
 digraph {
 Apartment [ label=" Apartment " shape= box ]
 Area [ label=" Area " shape= box ]
-Condominium [ label=" Condominium " shape= box ]
+Condominium [ label=" Condominium " shape= boxshape= rhombcolor= pink ]
 Employee [ label=" Employee " shape= box ]
 Gates [ label=" Gates " shape= box ]
 Owner [ label=" Owner " shape= box ]
