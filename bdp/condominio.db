@@ -22,6 +22,9 @@
         <component_file path="/Users/maychellfernandesdeoliveira/Desktop/metodos p3/condominio" name="Owner" suffix="mch" user="maychellfernandesdeoliveira">
             <component name="Owner" type="specification" />
         </component_file>
+        <component_file path="/Users/maychellfernandesdeoliveira/Desktop/metodos p3/condominio" name="Suggestion" suffix="mch" user="maychellfernandesdeoliveira">
+            <component name="Suggestion" type="specification" />
+        </component_file>
         <component_file path="/Users/maychellfernandesdeoliveira/Desktop/metodos p3/condominio" name="Vehicle" suffix="mch" user="maychellfernandesdeoliveira">
             <component name="Vehicle" type="specification" />
         </component_file>

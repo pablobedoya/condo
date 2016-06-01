@@ -5,9 +5,11 @@ Condominium [ label=" Condominium " shape= boxshape= rhombcolor= pink ]
 Employee [ label=" Employee " shape= box ]
 Gates [ label=" Gates " shape= box ]
 Owner [ label=" Owner " shape= box ]
+Suggestion [ label=" Suggestion " shape= box ]
 Vehicle [ label=" Vehicle " shape= box ]
 
 "Apartment" -> "Owner" [style= dotted ]
 "Apartment" -> "Vehicle" [style= dotted ]
+"Owner" -> "Suggestion" [style= dotted ]
 "Vehicle" -> "Owner" [style= dotted ]
 }
