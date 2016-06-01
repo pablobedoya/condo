@@ -4,11 +4,26 @@
     <project decomp_dir="/Users/maychellfernandesdeoliveira/Desktop/metodos p3/condominio/bdp/expand_src" old_decomp_dir="/Users/maychellfernandesdeoliveira/Desktop/metodos p3/condominio/bdp/src">
         <!-- Definition directory list -->
         <!-- Component file list -->
+        <component_file path="/Users/maychellfernandesdeoliveira/Desktop/metodos p3/condominio" name="Apartment" suffix="mch" user="maychellfernandesdeoliveira">
+            <component name="Apartment" type="specification" />
+        </component_file>
+        <component_file path="/Users/maychellfernandesdeoliveira/Desktop/metodos p3/condominio" name="Area" suffix="mch" user="maychellfernandesdeoliveira">
+            <component name="Area" type="specification" />
+        </component_file>
+        <component_file path="/Users/maychellfernandesdeoliveira/Desktop/metodos p3/condominio" name="Condominium" suffix="mch" user="maychellfernandesdeoliveira">
+            <component name="Condominium" type="specification" />
+        </component_file>
         <component_file path="/Users/maychellfernandesdeoliveira/Desktop/metodos p3/condominio" name="Employee" suffix="mch" user="maychellfernandesdeoliveira">
             <component name="Employee" type="specification" />
         </component_file>
         <component_file path="/Users/maychellfernandesdeoliveira/Desktop/metodos p3/condominio" name="Gates" suffix="mch" user="maychellfernandesdeoliveira">
             <component name="Gates" type="specification" />
+        </component_file>
+        <component_file path="/Users/maychellfernandesdeoliveira/Desktop/metodos p3/condominio" name="Owner" suffix="mch" user="maychellfernandesdeoliveira">
+            <component name="Owner" type="specification" />
+        </component_file>
+        <component_file path="/Users/maychellfernandesdeoliveira/Desktop/metodos p3/condominio" name="Vehicle" suffix="mch" user="maychellfernandesdeoliveira">
+            <component name="Vehicle" type="specification" />
         </component_file>
     </project>
 </db_xml>
