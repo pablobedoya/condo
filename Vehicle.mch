@@ -8,7 +8,7 @@ SEES Owner
 SETS VEHICLE_PLATE; PERMITION = {permitted}
 VARIABLES vehicles
 INVARIANT vehicles : VEHICLE_PLATE --> PERMITION
-INITIALISATION vehicles := {}
+INITIALISATION vehicles := VEHICLE_PLATE * {permitted}
 OPERATIONS
     add_vehicle(plate, owner) =
     PRE plate : VEHICLE_PLATE & owner : OWNER
@@ -18,6 +18,6 @@ OPERATIONS
     remove_vehicle(plate) =
     PRE plate : VEHICLE_PLATE & vehicles(plate) /: {}
     THEN vehicles := vehicles - {plate |-> vehicles(plate)}
-    END;
+    END
     
 END
