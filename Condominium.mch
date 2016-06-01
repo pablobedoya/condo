@@ -1,29 +1,29 @@
-<<<<<<< HEAD
-/* Condominium
- * Author: 
- * Creation date: 01/06/2016
- */
-MACHINE
-    Condominium
-
-END
-=======
 MACHINE Condominium
-INCLUDES Owner, Area
-VARIABLES reserved
+INCLUDES Owner, Area, Event
+VARIABLES reserved, events
 INVARIANT
- reserved : owner <-> area
-INITIALISATION reserved := {}
+ reserved : owner <-> area & events : AREA --> EVENT
+INITIALISATION reserved := {} || events := {}
 OPERATIONS
-  book_area (oo, aa) = 
+  book_area (oo, aa) =
     PRE oo : OWNER & aa : AREA & (oo : dom(reserved) or oo /: dom(reserved)) & aa /: ran(reserved)
     THEN reserved := reserved \/ {oo |-> aa}
     END;
 
   cancel_booking (oo, aa) =
-    PRE oo : OWNER & aa : AREA & aa : ran(reserved)
+    PRE oo : OWNER & aa : AREA & oo : dom(reserved) & aa : ran(reserved)
     THEN reserved := reserved - {oo |-> aa}
-    END    
+    END;
+
+  add_event(aa, ee) =
+    PRE aa : AREA & ee : EVENT & aa : ran(reserved) & ee /: ran(events)
+    THEN events := events \/ {aa |-> ee}
+    END;
+
+  remove_event(aa, ee) =
+    PRE aa : AREA & ee : EVENT & ee : ran(events)
+    THEN events := events - {aa |-> ee}
+    END
+
 END
 
->>>>>>> f18ce50c0ba9af266b858bad5e67a5af76736c45
