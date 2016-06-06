@@ -10,14 +10,14 @@ VARIABLES vehicles
 INVARIANT vehicles : VEHICLE_PLATE --> PERMITION
 INITIALISATION vehicles := {}
 OPERATIONS
-    add_vehicle(plate, owner) =
-    PRE plate : VEHICLE_PLATE & owner : OWNER
+    add_vehicle(plate) =
+    PRE plate : VEHICLE_PLATE
     THEN vehicles := vehicles <+ {plate |-> permitted}
     END;
     
     remove_vehicle(plate) =
     PRE plate : VEHICLE_PLATE & vehicles(plate) /: {}
-    THEN vehicles := vehicles - {plate |-> vehicles(plate)}
-    END;
+    THEN vehicles := vehicles - {plate |-> permitted}
+    END
     
 END
