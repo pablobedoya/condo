@@ -6,7 +6,7 @@ MACHINE Employee
 SETS NAME; ROLES = {permition, no_permition}
 VARIABLES employees
 INVARIANT employees : NAME --> ROLES
-INITIALISATION employees := {}
+INITIALISATION employees := NAME * {no_permition}
 OPERATIONS
     add_emp(name, role) =
     PRE name : NAME & employees(name) : {} & role : ROLES
@@ -14,12 +14,12 @@ OPERATIONS
     END;
     
     remove_emp(name) =
-    PRE name : NAME & employees(name) /: {}
-    THEN employees := employees - {name |-> employees(name)}
+    PRE name : NAME & employees(name) : {permition}
+    THEN employees := employees <+ {name |-> no_permition}
     END;
     
     change_role(name, new_role) =
-    PRE name : NAME & employees(name) /: {} & new_role : ROLES
+    PRE name : NAME & employees(name) /= new_role & new_role : ROLES
     THEN employees := employees <+ {name |-> new_role}
     END
 

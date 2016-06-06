@@ -17,7 +17,7 @@ OPERATIONS
     THEN owner := owner - {oo}
     END;
     
-    add_owner_suggestion(oo, suggestion) =
+  add_owner_suggestion(oo, suggestion) =
     PRE oo : OWNER & suggestion : SUGGESTION
     THEN owner_suggestions := owner_suggestions <+ {oo |-> suggestion}
     END

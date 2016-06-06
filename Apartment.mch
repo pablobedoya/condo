@@ -17,7 +17,8 @@ OPERATIONS
     
     remove_owner_from_apartment(number) =
     PRE number : NUMBER
-    THEN apartments := apartments - {number |-> apartments(number)} || apartment_vehicles := apartment_vehicles - {number |-> apartment_vehicles(number)}
+    THEN apartments := apartments - {number |-> apartments(number)};
+         apartment_vehicles := apartment_vehicles - {number |-> apartment_vehicles(number)}
     END
     
 END
