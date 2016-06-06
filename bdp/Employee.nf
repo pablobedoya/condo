@@ -76,9 +76,9 @@ THEORY ListExclusivityX IS
 END
 &
 THEORY ListInitialisationX IS
-  Expanded_List_Initialisation(Machine(Employee))==(employees:={});
+  Expanded_List_Initialisation(Machine(Employee))==(employees:=NAME*{no_permition});
   Context_List_Initialisation(Machine(Employee))==(skip);
-  List_Initialisation(Machine(Employee))==(employees:={})
+  List_Initialisation(Machine(Employee))==(employees:=NAME*{no_permition})
 END
 &
 THEORY ListParametersX IS
@@ -93,31 +93,43 @@ THEORY ListConstraintsX IS
 END
 &
 THEORY ListOperationsX IS
-  Internal_List_Operations(Machine(Employee))==(add_emp);
-  List_Operations(Machine(Employee))==(add_emp)
+  Internal_List_Operations(Machine(Employee))==(add_emp,remove_emp,change_role);
+  List_Operations(Machine(Employee))==(add_emp,remove_emp,change_role)
 END
 &
 THEORY ListInputX IS
-  List_Input(Machine(Employee),add_emp)==(name)
+  List_Input(Machine(Employee),add_emp)==(name,role);
+  List_Input(Machine(Employee),remove_emp)==(name);
+  List_Input(Machine(Employee),change_role)==(name,new_role)
 END
 &
 THEORY ListOutputX IS
-  List_Output(Machine(Employee),add_emp)==(?)
+  List_Output(Machine(Employee),add_emp)==(?);
+  List_Output(Machine(Employee),remove_emp)==(?);
+  List_Output(Machine(Employee),change_role)==(?)
 END
 &
 THEORY ListHeaderX IS
-  List_Header(Machine(Employee),add_emp)==(add_emp(name))
+  List_Header(Machine(Employee),add_emp)==(add_emp(name,role));
+  List_Header(Machine(Employee),remove_emp)==(remove_emp(name));
+  List_Header(Machine(Employee),change_role)==(change_role(name,new_role))
 END
 &
 THEORY ListOperationGuardX END
 &
 THEORY ListPreconditionX IS
-  List_Precondition(Machine(Employee),add_emp)==(name: NAME)
+  List_Precondition(Machine(Employee),add_emp)==(name: NAME & employees(name): {} & role: ROLES);
+  List_Precondition(Machine(Employee),remove_emp)==(name: NAME & employees(name): {permition});
+  List_Precondition(Machine(Employee),change_role)==(name: NAME & new_role: ROLES & employees(name)/=new_role)
 END
 &
 THEORY ListSubstitutionX IS
-  Expanded_List_Substitution(Machine(Employee),add_emp)==(name: NAME | employees:=employees<+{name|->no_permition});
-  List_Substitution(Machine(Employee),add_emp)==(employees(name):=no_permition)
+  Expanded_List_Substitution(Machine(Employee),change_role)==(name: NAME & new_role: ROLES & employees(name)/=new_role | employees:=employees<+{name|->new_role});
+  Expanded_List_Substitution(Machine(Employee),remove_emp)==(name: NAME & employees(name): {permition} | employees:=employees<+{name|->no_permition});
+  Expanded_List_Substitution(Machine(Employee),add_emp)==(name: NAME & employees(name): {} & role: ROLES | employees:={name|->role});
+  List_Substitution(Machine(Employee),add_emp)==(employees:={name|->role});
+  List_Substitution(Machine(Employee),remove_emp)==(employees:=employees<+{name|->no_permition});
+  List_Substitution(Machine(Employee),change_role)==(employees:=employees<+{name|->new_role})
 END
 &
 THEORY ListConstantsX IS
@@ -158,11 +170,13 @@ END
 THEORY ListSeenInfoX END
 &
 THEORY ListANYVarX IS
-  List_ANY_Var(Machine(Employee),add_emp)==(?)
+  List_ANY_Var(Machine(Employee),add_emp)==(?);
+  List_ANY_Var(Machine(Employee),remove_emp)==(?);
+  List_ANY_Var(Machine(Employee),change_role)==(?)
 END
 &
 THEORY ListOfIdsX IS
-  List_Of_Ids(Machine(Employee)) == (NAME,ROLES,permition,no_permition | ? | employees | ? | add_emp | ? | ? | ? | Employee);
+  List_Of_Ids(Machine(Employee)) == (NAME,ROLES,permition,no_permition | ? | employees | ? | add_emp,remove_emp,change_role | ? | ? | ? | Employee);
   List_Of_HiddenCst_Ids(Machine(Employee)) == (? | ?);
   List_Of_VisibleCst_Ids(Machine(Employee)) == (?);
   List_Of_VisibleVar_Ids(Machine(Employee)) == (? | ?);
@@ -182,7 +196,7 @@ THEORY VariablesEnvX IS
 END
 &
 THEORY OperationsEnvX IS
-  Operations(Machine(Employee)) == (Type(add_emp) == Cst(No_type,atype(NAME,?,?)))
+  Operations(Machine(Employee)) == (Type(change_role) == Cst(No_type,atype(NAME,?,?)*etype(ROLES,?,?));Type(remove_emp) == Cst(No_type,atype(NAME,?,?));Type(add_emp) == Cst(No_type,atype(NAME,?,?)*etype(ROLES,?,?)))
 END
 &
 THEORY TCIntRdX IS

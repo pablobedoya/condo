@@ -19,7 +19,7 @@ OPERATIONS
     END;
     
     change_role(name, new_role) =
-    PRE name : NAME & employees(name) /= new_role & new_role : ROLES
+    PRE name : NAME & new_role : ROLES & employees(name) /= new_role
     THEN employees := employees <+ {name |-> new_role}
     END
 

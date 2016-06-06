@@ -5,19 +5,19 @@
 MACHINE
     Vehicle
 SEES Owner
-SETS VEHICLE_PLATE; PERMITION = {permitted, unpermitted}
+SETS VEHICLE_PLATE; PERMITION = {permitted}
 VARIABLES vehicles
 INVARIANT vehicles : VEHICLE_PLATE --> PERMITION
-INITIALISATION vehicles := VEHICLE_PLATE * {unpermitted}
+INITIALISATION vehicles := {}
 OPERATIONS
-    add_vehicle(plate, owner) =
-    PRE plate : VEHICLE_PLATE & owner : OWNER
+    add_vehicle(plate) =
+    PRE plate : VEHICLE_PLATE
     THEN vehicles := vehicles <+ {plate |-> permitted}
     END;
     
     remove_vehicle(plate) =
-    PRE plate : VEHICLE_PLATE & vehicles(plate) : {permitted}
-    THEN vehicles := vehicles <+ {plate |-> unpermitted}
+    PRE plate : VEHICLE_PLATE & vehicles(plate) /: {}
+    THEN vehicles := vehicles - {plate |-> permitted}
     END
     
 END
