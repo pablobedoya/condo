@@ -1,0 +1,27 @@
+/* Gates_r
+ * Author: 
+ * Creation date: 08/06/2016
+ */
+
+REFINEMENT Gates_r
+REFINES Gates
+
+VARIABLES positionr
+    
+INVARIANT positionr : GATE --> POSITION &
+    position = positionr
+
+INITIALISATION positionr := GATE * {closed}
+
+OPERATIONS
+  open_gate(gg) =
+    PRE gg : GATE
+    THEN positionr(gg) := open
+    END;
+
+  close_gate(gg) =
+    PRE gg : GATE
+    THEN positionr(gg) := closed
+    END
+
+ END

@@ -1,0 +1,35 @@
+﻿/* Employee_i2
+ * Author: 
+ * Creation date: 08/06/2016
+ */
+
+IMPLEMENTATION Employee_i2
+REFINES Employee
+VALUES NAME = 0 .. 3
+
+CONCRETE_VARIABLES employeesi
+
+INVARIANT
+    employeesi : NAME --> ROLES &
+    employees = employeesi
+
+INITIALISATION employeesi := NAME * { no_permition }
+
+OPERATIONS
+    add_emp ( name , role ) =
+    BEGIN
+        employeesi ( name ) := role
+    END ;
+
+
+    remove_emp ( name ) =
+    BEGIN
+        employeesi ( name ) := no_permition
+    END ;
+
+    change_role ( name , new_role ) =
+    BEGIN
+        employeesi ( name ) := new_role
+    END
+
+ END
