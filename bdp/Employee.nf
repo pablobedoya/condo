@@ -126,10 +126,17 @@ END
 THEORY ListSubstitutionX IS
   Expanded_List_Substitution(Machine(Employee),change_role)==(name: NAME & new_role: ROLES & employees(name)/=new_role | employees:=employees<+{name|->new_role});
   Expanded_List_Substitution(Machine(Employee),remove_emp)==(name: NAME & employees(name): {permition} | employees:=employees<+{name|->no_permition});
+<<<<<<< HEAD
   Expanded_List_Substitution(Machine(Employee),add_emp)==(name: NAME & employees(name): {} & role: ROLES | employees:=employees<+{name|->role});
   List_Substitution(Machine(Employee),add_emp)==(employees(name):=role);
   List_Substitution(Machine(Employee),remove_emp)==(employees(name):=no_permition);
   List_Substitution(Machine(Employee),change_role)==(employees(name):=new_role)
+=======
+  Expanded_List_Substitution(Machine(Employee),add_emp)==(name: NAME & employees(name): {} & role: ROLES | employees:={name|->role});
+  List_Substitution(Machine(Employee),add_emp)==(employees:={name|->role});
+  List_Substitution(Machine(Employee),remove_emp)==(employees:=employees<+{name|->no_permition});
+  List_Substitution(Machine(Employee),change_role)==(employees:=employees<+{name|->new_role})
+>>>>>>> cd5dc82c81be5499a5f169c6534fd38c5757a6b0
 END
 &
 THEORY ListConstantsX IS

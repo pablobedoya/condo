@@ -16,9 +16,12 @@
         <component_file path="/Users/maychellfernandesdeoliveira/Desktop/metodos p3/condominio" name="Employee" suffix="mch" user="maychellfernandesdeoliveira">
             <component name="Employee" type="specification" />
         </component_file>
+<<<<<<< HEAD
         <component_file path="/Users/maychellfernandesdeoliveira/Desktop/metodos p3/condominio" name="Employee_i2" suffix="imp" user="maychellfernandesdeoliveira">
             <component name="Employee_i2" type="implementation" />
         </component_file>
+=======
+>>>>>>> cd5dc82c81be5499a5f169c6534fd38c5757a6b0
         <component_file path="/Users/maychellfernandesdeoliveira/Desktop/metodos p3/condominio" name="Event" suffix="mch" user="maychellfernandesdeoliveira">
             <component name="Event" type="specification" />
         </component_file>
