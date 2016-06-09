@@ -10,15 +10,15 @@ VARIABLES apartments, apartment_vehicles
 INVARIANT apartments : NUMBER +-> OWNER & apartment_vehicles : NUMBER +-> VEHICLE_PLATE
 INITIALISATION apartments := {} || apartment_vehicles := {}
 OPERATIONS
-    add_apart_to_owner(number, owner1) =
-    PRE number : NUMBER & owner1 : OWNER
-    THEN apartments := apartments <+ {number |-> owner1}
+    add_apart_to_owner(nn, oo) =
+    PRE nn : NUMBER & oo : OWNER
+    THEN apartments := apartments <+ {nn |-> oo}
     END;
     
-    remove_owner_from_apartment(number) =
-    PRE number : NUMBER
-    THEN apartments := apartments - {number |-> apartments(number)} ||
-         apartment_vehicles := apartment_vehicles - {number |-> apartment_vehicles(number)}
+    remove_owner_from_apartment(nn) =
+    PRE nn : NUMBER
+    THEN apartments := apartments - {nn |-> apartments(nn)} ||
+         apartment_vehicles := apartment_vehicles - {nn |-> apartment_vehicles(nn)}
     END
     
 END

@@ -1,9 +1,9 @@
-/* Employee_i2
+/* Employee_i
  * Author: 
  * Creation date: 08/06/2016
  */
 
-IMPLEMENTATION Employee_i2
+IMPLEMENTATION Employee_i
 REFINES Employee
 VALUES NAME = 0..3
 
@@ -16,9 +16,9 @@ INVARIANT
 INITIALISATION employeesi := NAME * {no_permition}
 
 OPERATIONS
-    add_emp(name, role) =
+    add_emp(name) =
     BEGIN
-        employeesi(name) := role
+        employeesi(name) := permition
     END;
 
     

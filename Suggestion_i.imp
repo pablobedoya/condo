@@ -1,0 +1,29 @@
+/* Suggestion_i
+ * Author: User
+ * Creation date: 09/06/2016
+ */
+
+IMPLEMENTATION Suggestion_i
+REFINES Suggestion
+VALUES SUGGESTION = 0..3
+
+CONCRETE_VARIABLES suggestionsi
+
+INVARIANT
+    suggestionsi : SUGGESTION --> BOOL
+
+INITIALISATION suggestionsi := SUGGESTION*{FALSE}
+
+OPERATIONS
+  add_suggestion(suggestion) =
+    BEGIN
+        suggestionsi(suggestion) := TRUE
+    END;
+
+
+  remove_suggestion(suggestion) =
+    BEGIN
+        suggestionsi(suggestion) := FALSE
+    END
+
+ END

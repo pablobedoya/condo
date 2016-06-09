@@ -1,0 +1,29 @@
+/* Area_i
+ * Author: User
+ * Creation date: 09/06/2016
+ */
+
+IMPLEMENTATION Area_i
+REFINES Area
+VALUES AREA = 0..3
+
+CONCRETE_VARIABLES areai
+
+INVARIANT
+    areai : AREA --> BOOL
+
+INITIALISATION areai := AREA*{FALSE}
+
+OPERATIONS
+  add_area(aa) =
+    BEGIN
+        areai(aa) := TRUE
+    END;
+
+
+  remove_area(aa) =
+    BEGIN
+        areai(aa) := FALSE
+    END
+
+ END
