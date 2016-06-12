@@ -4,7 +4,7 @@
  */
 MACHINE
     Area
-SETS AREA
+SEES Area_Context
 ABSTRACT_VARIABLES area
 INVARIANT
  area <: AREA

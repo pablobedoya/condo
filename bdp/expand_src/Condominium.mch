@@ -1,8 +1,9 @@
 ﻿MACHINE Condominium
-INCLUDES Owner , Area , Event
+EXTENDS Owner , Area
+INCLUDES Event_Context , Area_Context , Owner_Context
 ABSTRACT_VARIABLES reserved , events
 INVARIANT
- reserved : owner <-> area & events : area <-> EVENT
+ reserved : owner +-> area & events : area +-> EVENT
 INITIALISATION reserved := {} || events := {}
 OPERATIONS
   create_owner ( oo ) =
@@ -16,7 +17,7 @@ OPERATIONS
     END ;
 
   book_area ( oo , aa ) =
-    PRE oo : OWNER & aa : AREA & oo : owner & aa : area & ( oo : dom ( reserved ) or oo /: dom ( reserved ) ) & aa /: ran ( reserved )
+    PRE oo : OWNER & aa : AREA & oo : owner & aa : area & oo /: dom ( reserved ) & aa /: ran ( reserved )
     THEN reserved := reserved \/ { oo |-> aa }
     END ;
 
@@ -31,7 +32,7 @@ OPERATIONS
     END ;
 
   remove_event ( aa , ee ) =
-    PRE aa : AREA & ee : EVENT & aa : area & aa : dom ( events ) & ee : ran ( events )
+    PRE aa : AREA & ee : EVENT & aa : area & aa : dom ( events ) & events ( aa ) = ee
     THEN events := events - { aa |-> ee }
     END
 

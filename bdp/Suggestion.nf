@@ -13,7 +13,7 @@ THEORY LoadedStructureX IS
 END
 &
 THEORY ListSeesX IS
-  List_Sees(Machine(Suggestion))==(?)
+  List_Sees(Machine(Suggestion))==(Owner_Context)
 END
 &
 THEORY ListUsesX IS
@@ -57,7 +57,7 @@ THEORY ListInvariantX IS
   Expanded_List_Invariant(Machine(Suggestion))==(btrue);
   Abstract_List_Invariant(Machine(Suggestion))==(btrue);
   Context_List_Invariant(Machine(Suggestion))==(btrue);
-  List_Invariant(Machine(Suggestion))==(suggestions <: SUGGESTION)
+  List_Invariant(Machine(Suggestion))==(suggestions: SUGGESTION +-> OWNER)
 END
 &
 THEORY ListAssertionsX IS
@@ -85,7 +85,9 @@ THEORY ListParametersX IS
   List_Parameters(Machine(Suggestion))==(?)
 END
 &
-THEORY ListInstanciatedParametersX END
+THEORY ListInstanciatedParametersX IS
+  List_Instanciated_Parameters(Machine(Suggestion),Machine(Owner_Context))==(?)
+END
 &
 THEORY ListConstraintsX IS
   List_Context_Constraints(Machine(Suggestion))==(btrue);
@@ -98,7 +100,7 @@ THEORY ListOperationsX IS
 END
 &
 THEORY ListInputX IS
-  List_Input(Machine(Suggestion),add_suggestion)==(suggestion);
+  List_Input(Machine(Suggestion),add_suggestion)==(suggestion,oo);
   List_Input(Machine(Suggestion),remove_suggestion)==(suggestion)
 END
 &
@@ -108,22 +110,22 @@ THEORY ListOutputX IS
 END
 &
 THEORY ListHeaderX IS
-  List_Header(Machine(Suggestion),add_suggestion)==(add_suggestion(suggestion));
+  List_Header(Machine(Suggestion),add_suggestion)==(add_suggestion(suggestion,oo));
   List_Header(Machine(Suggestion),remove_suggestion)==(remove_suggestion(suggestion))
 END
 &
 THEORY ListOperationGuardX END
 &
 THEORY ListPreconditionX IS
-  List_Precondition(Machine(Suggestion),add_suggestion)==(suggestion: SUGGESTION);
-  List_Precondition(Machine(Suggestion),remove_suggestion)==(suggestion: SUGGESTION & suggestion: suggestions)
+  List_Precondition(Machine(Suggestion),add_suggestion)==(suggestion: SUGGESTION & oo: OWNER);
+  List_Precondition(Machine(Suggestion),remove_suggestion)==(suggestion: SUGGESTION)
 END
 &
 THEORY ListSubstitutionX IS
-  Expanded_List_Substitution(Machine(Suggestion),remove_suggestion)==(suggestion: SUGGESTION & suggestion: suggestions | suggestions:=suggestions-{suggestion});
-  Expanded_List_Substitution(Machine(Suggestion),add_suggestion)==(suggestion: SUGGESTION | suggestions:=suggestions\/{suggestion});
-  List_Substitution(Machine(Suggestion),add_suggestion)==(suggestions:=suggestions\/{suggestion});
-  List_Substitution(Machine(Suggestion),remove_suggestion)==(suggestions:=suggestions-{suggestion})
+  Expanded_List_Substitution(Machine(Suggestion),remove_suggestion)==(suggestion: SUGGESTION | suggestions:=suggestions-{suggestion|->suggestions(suggestion)});
+  Expanded_List_Substitution(Machine(Suggestion),add_suggestion)==(suggestion: SUGGESTION & oo: OWNER | suggestions:=suggestions<+{suggestion|->oo});
+  List_Substitution(Machine(Suggestion),add_suggestion)==(suggestions:=suggestions<+{suggestion|->oo});
+  List_Substitution(Machine(Suggestion),remove_suggestion)==(suggestions:=suggestions-{suggestion|->suggestions(suggestion)})
 END
 &
 THEORY ListConstantsX IS
@@ -135,8 +137,8 @@ END
 THEORY ListSetsX IS
   Set_Definition(Machine(Suggestion),SUGGESTION)==(?);
   Context_List_Enumerated(Machine(Suggestion))==(?);
-  Context_List_Defered(Machine(Suggestion))==(?);
-  Context_List_Sets(Machine(Suggestion))==(?);
+  Context_List_Defered(Machine(Suggestion))==(OWNER);
+  Context_List_Sets(Machine(Suggestion))==(OWNER);
   List_Valuable_Sets(Machine(Suggestion))==(SUGGESTION);
   Inherited_List_Enumerated(Machine(Suggestion))==(?);
   Inherited_List_Defered(Machine(Suggestion))==(?);
@@ -155,12 +157,21 @@ END
 &
 THEORY ListPropertiesX IS
   Abstract_List_Properties(Machine(Suggestion))==(btrue);
-  Context_List_Properties(Machine(Suggestion))==(btrue);
+  Context_List_Properties(Machine(Suggestion))==(DEFAULT_OWNER: OWNER & OWNER: FIN(INTEGER) & not(OWNER = {}));
   Inherited_List_Properties(Machine(Suggestion))==(btrue);
   List_Properties(Machine(Suggestion))==(SUGGESTION: FIN(INTEGER) & not(SUGGESTION = {}))
 END
 &
-THEORY ListSeenInfoX END
+THEORY ListSeenInfoX IS
+  Seen_Internal_List_Operations(Machine(Suggestion),Machine(Owner_Context))==(?);
+  Seen_Context_List_Enumerated(Machine(Suggestion))==(?);
+  Seen_Context_List_Invariant(Machine(Suggestion))==(btrue);
+  Seen_Context_List_Assertions(Machine(Suggestion))==(btrue);
+  Seen_Context_List_Properties(Machine(Suggestion))==(btrue);
+  Seen_List_Constraints(Machine(Suggestion))==(btrue);
+  Seen_List_Operations(Machine(Suggestion),Machine(Owner_Context))==(?);
+  Seen_Expanded_List_Invariant(Machine(Suggestion),Machine(Owner_Context))==(btrue)
+END
 &
 THEORY ListANYVarX IS
   List_ANY_Var(Machine(Suggestion),add_suggestion)==(?);
@@ -168,11 +179,16 @@ THEORY ListANYVarX IS
 END
 &
 THEORY ListOfIdsX IS
-  List_Of_Ids(Machine(Suggestion)) == (SUGGESTION | ? | suggestions | ? | add_suggestion,remove_suggestion | ? | ? | ? | Suggestion);
+  List_Of_Ids(Machine(Suggestion)) == (SUGGESTION | ? | suggestions | ? | add_suggestion,remove_suggestion | ? | seen(Machine(Owner_Context)) | ? | Suggestion);
   List_Of_HiddenCst_Ids(Machine(Suggestion)) == (? | ?);
   List_Of_VisibleCst_Ids(Machine(Suggestion)) == (?);
   List_Of_VisibleVar_Ids(Machine(Suggestion)) == (? | ?);
-  List_Of_Ids_SeenBNU(Machine(Suggestion)) == (?: ?)
+  List_Of_Ids_SeenBNU(Machine(Suggestion)) == (?: ?);
+  List_Of_Ids(Machine(Owner_Context)) == (DEFAULT_OWNER,OWNER | ? | ? | ? | ? | ? | ? | ? | Owner_Context);
+  List_Of_HiddenCst_Ids(Machine(Owner_Context)) == (? | ?);
+  List_Of_VisibleCst_Ids(Machine(Owner_Context)) == (DEFAULT_OWNER);
+  List_Of_VisibleVar_Ids(Machine(Owner_Context)) == (? | ?);
+  List_Of_Ids_SeenBNU(Machine(Owner_Context)) == (?: ?)
 END
 &
 THEORY SetsEnvX IS
@@ -180,11 +196,11 @@ THEORY SetsEnvX IS
 END
 &
 THEORY VariablesEnvX IS
-  Variables(Machine(Suggestion)) == (Type(suggestions) == Mvl(SetOf(atype(SUGGESTION,?,?))))
+  Variables(Machine(Suggestion)) == (Type(suggestions) == Mvl(SetOf(atype(SUGGESTION,?,?)*atype(OWNER,?,?))))
 END
 &
 THEORY OperationsEnvX IS
-  Operations(Machine(Suggestion)) == (Type(remove_suggestion) == Cst(No_type,atype(SUGGESTION,?,?));Type(add_suggestion) == Cst(No_type,atype(SUGGESTION,?,?)))
+  Operations(Machine(Suggestion)) == (Type(remove_suggestion) == Cst(No_type,atype(SUGGESTION,?,?));Type(add_suggestion) == Cst(No_type,atype(SUGGESTION,?,?)*atype(OWNER,?,?)))
 END
 &
 THEORY TCIntRdX IS

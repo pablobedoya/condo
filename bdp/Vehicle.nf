@@ -13,7 +13,7 @@ THEORY LoadedStructureX IS
 END
 &
 THEORY ListSeesX IS
-  List_Sees(Machine(Vehicle))==(Owner)
+  List_Sees(Machine(Vehicle))==(?)
 END
 &
 THEORY ListUsesX IS
@@ -56,7 +56,7 @@ THEORY ListInvariantX IS
   Gluing_List_Invariant(Machine(Vehicle))==(btrue);
   Expanded_List_Invariant(Machine(Vehicle))==(btrue);
   Abstract_List_Invariant(Machine(Vehicle))==(btrue);
-  Context_List_Invariant(Machine(Vehicle))==(owner <: OWNER & owner_suggestions: OWNER +-> SUGGESTION);
+  Context_List_Invariant(Machine(Vehicle))==(btrue);
   List_Invariant(Machine(Vehicle))==(vehicles: VEHICLE_PLATE --> PERMITION)
 END
 &
@@ -76,18 +76,16 @@ THEORY ListExclusivityX IS
 END
 &
 THEORY ListInitialisationX IS
-  Expanded_List_Initialisation(Machine(Vehicle))==(vehicles:={});
+  Expanded_List_Initialisation(Machine(Vehicle))==(vehicles:=VEHICLE_PLATE*{unpermitted});
   Context_List_Initialisation(Machine(Vehicle))==(skip);
-  List_Initialisation(Machine(Vehicle))==(vehicles:={})
+  List_Initialisation(Machine(Vehicle))==(vehicles:=VEHICLE_PLATE*{unpermitted})
 END
 &
 THEORY ListParametersX IS
   List_Parameters(Machine(Vehicle))==(?)
 END
 &
-THEORY ListInstanciatedParametersX IS
-  List_Instanciated_Parameters(Machine(Vehicle),Machine(Owner))==(?)
-END
+THEORY ListInstanciatedParametersX END
 &
 THEORY ListConstraintsX IS
   List_Context_Constraints(Machine(Vehicle))==(btrue);
@@ -118,14 +116,14 @@ THEORY ListOperationGuardX END
 &
 THEORY ListPreconditionX IS
   List_Precondition(Machine(Vehicle),add_vehicle)==(plate: VEHICLE_PLATE);
-  List_Precondition(Machine(Vehicle),remove_vehicle)==(plate: VEHICLE_PLATE & vehicles(plate)/:{})
+  List_Precondition(Machine(Vehicle),remove_vehicle)==(plate: VEHICLE_PLATE & vehicles(plate): {permitted})
 END
 &
 THEORY ListSubstitutionX IS
-  Expanded_List_Substitution(Machine(Vehicle),remove_vehicle)==(plate: VEHICLE_PLATE & vehicles(plate)/:{} | vehicles:=vehicles-{plate|->permitted});
+  Expanded_List_Substitution(Machine(Vehicle),remove_vehicle)==(plate: VEHICLE_PLATE & vehicles(plate): {permitted} | vehicles:=vehicles<+{plate|->unpermitted});
   Expanded_List_Substitution(Machine(Vehicle),add_vehicle)==(plate: VEHICLE_PLATE | vehicles:=vehicles<+{plate|->permitted});
   List_Substitution(Machine(Vehicle),add_vehicle)==(vehicles:=vehicles<+{plate|->permitted});
-  List_Substitution(Machine(Vehicle),remove_vehicle)==(vehicles:=vehicles-{plate|->permitted})
+  List_Substitution(Machine(Vehicle),remove_vehicle)==(vehicles:=vehicles<+{plate|->unpermitted})
 END
 &
 THEORY ListConstantsX IS
@@ -137,8 +135,8 @@ END
 THEORY ListSetsX IS
   Set_Definition(Machine(Vehicle),VEHICLE_PLATE)==(?);
   Context_List_Enumerated(Machine(Vehicle))==(?);
-  Context_List_Defered(Machine(Vehicle))==(OWNER);
-  Context_List_Sets(Machine(Vehicle))==(OWNER);
+  Context_List_Defered(Machine(Vehicle))==(?);
+  Context_List_Sets(Machine(Vehicle))==(?);
   List_Valuable_Sets(Machine(Vehicle))==(VEHICLE_PLATE);
   Inherited_List_Enumerated(Machine(Vehicle))==(?);
   Inherited_List_Defered(Machine(Vehicle))==(?);
@@ -146,7 +144,7 @@ THEORY ListSetsX IS
   List_Enumerated(Machine(Vehicle))==(PERMITION);
   List_Defered(Machine(Vehicle))==(VEHICLE_PLATE);
   List_Sets(Machine(Vehicle))==(VEHICLE_PLATE,PERMITION);
-  Set_Definition(Machine(Vehicle),PERMITION)==({permitted})
+  Set_Definition(Machine(Vehicle),PERMITION)==({permitted,unpermitted})
 END
 &
 THEORY ListHiddenConstantsX IS
@@ -158,27 +156,12 @@ END
 &
 THEORY ListPropertiesX IS
   Abstract_List_Properties(Machine(Vehicle))==(btrue);
-  Context_List_Properties(Machine(Vehicle))==(OWNER: FIN(INTEGER) & not(OWNER = {}));
+  Context_List_Properties(Machine(Vehicle))==(btrue);
   Inherited_List_Properties(Machine(Vehicle))==(btrue);
   List_Properties(Machine(Vehicle))==(VEHICLE_PLATE: FIN(INTEGER) & not(VEHICLE_PLATE = {}) & PERMITION: FIN(INTEGER) & not(PERMITION = {}))
 END
 &
-THEORY ListSeenInfoX IS
-  Seen_Internal_List_Operations(Machine(Vehicle),Machine(Owner))==(add_owner,remove_owner,add_owner_suggestion);
-  Seen_Context_List_Enumerated(Machine(Vehicle))==(?);
-  Seen_Context_List_Invariant(Machine(Vehicle))==(suggestions <: SUGGESTION);
-  Seen_Context_List_Assertions(Machine(Vehicle))==(btrue);
-  Seen_Context_List_Properties(Machine(Vehicle))==(SUGGESTION: FIN(INTEGER) & not(SUGGESTION = {}));
-  Seen_List_Constraints(Machine(Vehicle))==(btrue);
-  Seen_List_Precondition(Machine(Vehicle),add_owner_suggestion)==(oo: OWNER & suggestion: SUGGESTION);
-  Seen_Expanded_List_Substitution(Machine(Vehicle),add_owner_suggestion)==(owner_suggestions:=owner_suggestions<+{oo|->suggestion});
-  Seen_List_Precondition(Machine(Vehicle),remove_owner)==(oo: OWNER & oo: owner);
-  Seen_Expanded_List_Substitution(Machine(Vehicle),remove_owner)==(owner:=owner-{oo});
-  Seen_List_Precondition(Machine(Vehicle),add_owner)==(oo: OWNER & oo/:owner);
-  Seen_Expanded_List_Substitution(Machine(Vehicle),add_owner)==(owner:=owner\/{oo});
-  Seen_List_Operations(Machine(Vehicle),Machine(Owner))==(add_owner,remove_owner,add_owner_suggestion);
-  Seen_Expanded_List_Invariant(Machine(Vehicle),Machine(Owner))==(btrue)
-END
+THEORY ListSeenInfoX END
 &
 THEORY ListANYVarX IS
   List_ANY_Var(Machine(Vehicle),add_vehicle)==(?);
@@ -186,33 +169,23 @@ THEORY ListANYVarX IS
 END
 &
 THEORY ListOfIdsX IS
-  List_Of_Ids(Machine(Vehicle)) == (VEHICLE_PLATE,PERMITION,permitted | ? | vehicles | ? | add_vehicle,remove_vehicle | ? | seen(Machine(Owner)) | ? | Vehicle);
+  List_Of_Ids(Machine(Vehicle)) == (VEHICLE_PLATE,PERMITION,permitted,unpermitted | ? | vehicles | ? | add_vehicle,remove_vehicle | ? | ? | ? | Vehicle);
   List_Of_HiddenCst_Ids(Machine(Vehicle)) == (? | ?);
   List_Of_VisibleCst_Ids(Machine(Vehicle)) == (?);
   List_Of_VisibleVar_Ids(Machine(Vehicle)) == (? | ?);
-  List_Of_Ids_SeenBNU(Machine(Vehicle)) == (?: ?);
-  List_Of_Ids(Machine(Owner)) == (OWNER | ? | owner_suggestions,owner | ? | add_owner,remove_owner,add_owner_suggestion | ? | seen(Machine(Suggestion)) | ? | Owner);
-  List_Of_HiddenCst_Ids(Machine(Owner)) == (? | ?);
-  List_Of_VisibleCst_Ids(Machine(Owner)) == (?);
-  List_Of_VisibleVar_Ids(Machine(Owner)) == (? | ?);
-  List_Of_Ids_SeenBNU(Machine(Owner)) == (?: ?);
-  List_Of_Ids(Machine(Suggestion)) == (SUGGESTION | ? | suggestions | ? | add_suggestion,remove_suggestion | ? | ? | ? | Suggestion);
-  List_Of_HiddenCst_Ids(Machine(Suggestion)) == (? | ?);
-  List_Of_VisibleCst_Ids(Machine(Suggestion)) == (?);
-  List_Of_VisibleVar_Ids(Machine(Suggestion)) == (? | ?);
-  List_Of_Ids_SeenBNU(Machine(Suggestion)) == (?: ?)
+  List_Of_Ids_SeenBNU(Machine(Vehicle)) == (?: ?)
 END
 &
 THEORY SetsEnvX IS
-  Sets(Machine(Vehicle)) == (Type(VEHICLE_PLATE) == Cst(SetOf(atype(VEHICLE_PLATE,"[VEHICLE_PLATE","]VEHICLE_PLATE")));Type(PERMITION) == Cst(SetOf(etype(PERMITION,0,0))))
+  Sets(Machine(Vehicle)) == (Type(VEHICLE_PLATE) == Cst(SetOf(atype(VEHICLE_PLATE,"[VEHICLE_PLATE","]VEHICLE_PLATE")));Type(PERMITION) == Cst(SetOf(etype(PERMITION,0,1))))
 END
 &
 THEORY ConstantsEnvX IS
-  Constants(Machine(Vehicle)) == (Type(permitted) == Cst(etype(PERMITION,0,0)))
+  Constants(Machine(Vehicle)) == (Type(permitted) == Cst(etype(PERMITION,0,1));Type(unpermitted) == Cst(etype(PERMITION,0,1)))
 END
 &
 THEORY VariablesEnvX IS
-  Variables(Machine(Vehicle)) == (Type(vehicles) == Mvl(SetOf(atype(VEHICLE_PLATE,"[VEHICLE_PLATE","]VEHICLE_PLATE")*etype(PERMITION,0,0))))
+  Variables(Machine(Vehicle)) == (Type(vehicles) == Mvl(SetOf(atype(VEHICLE_PLATE,"[VEHICLE_PLATE","]VEHICLE_PLATE")*etype(PERMITION,0,1))))
 END
 &
 THEORY OperationsEnvX IS

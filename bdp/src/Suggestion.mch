@@ -4,20 +4,22 @@
  */
 MACHINE
     Suggestion
+SEES
+    Owner_Context
 SETS
- SUGGESTION
+    SUGGESTION
 ABSTRACT_VARIABLES suggestions
 INVARIANT
- suggestions <: SUGGESTION
+ suggestions : SUGGESTION +-> OWNER
 INITIALISATION suggestions := {}
 OPERATIONS
-  add_suggestion ( suggestion ) =
-    PRE suggestion : SUGGESTION
-    THEN suggestions := suggestions \/ { suggestion }
+  add_suggestion ( suggestion , oo ) =
+    PRE suggestion : SUGGESTION & oo : OWNER
+    THEN suggestions := suggestions <+ { suggestion |-> oo }
     END ;
 
   remove_suggestion ( suggestion ) =
-    PRE suggestion : SUGGESTION & suggestion : suggestions
-    THEN suggestions := suggestions - { suggestion }
+    PRE suggestion : SUGGESTION
+    THEN suggestions := suggestions - { suggestion |-> suggestions ( suggestion ) }
     END
 END

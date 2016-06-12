@@ -1,0 +1,29 @@
+﻿/* Suggestion_i
+ * Author: 
+ * Creation date: 11/06/2016
+ */
+
+IMPLEMENTATION Suggestion_i
+REFINES Suggestion
+SEES Owner_Context
+VALUES SUGGESTION = 0 .. 4
+CONCRETE_VARIABLES suggestionsi
+INVARIANT
+    suggestionsi : SUGGESTION --> OWNER &
+    ! pp . ( pp : dom ( suggestions ) =>
+           suggestions ( pp ) = suggestionsi ( pp ) )
+INITIALISATION suggestionsi := SUGGESTION * { DEFAULT_OWNER }
+
+OPERATIONS
+  add_suggestion ( suggestion , oo ) =
+    BEGIN
+        suggestionsi ( suggestion ) := oo
+    END ;
+
+
+  remove_suggestion ( suggestion ) =
+    BEGIN
+        suggestionsi ( suggestion ) := DEFAULT_OWNER
+    END
+
+ END

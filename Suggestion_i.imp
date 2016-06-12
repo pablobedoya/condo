@@ -1,29 +1,29 @@
 /* Suggestion_i
- * Author: User
- * Creation date: 09/06/2016
+ * Author: 
+ * Creation date: 11/06/2016
  */
 
 IMPLEMENTATION Suggestion_i
 REFINES Suggestion
-VALUES SUGGESTION = 0..3
-
+SEES Owner_Context
+VALUES SUGGESTION = 0..4
 CONCRETE_VARIABLES suggestionsi
-
 INVARIANT
-    suggestionsi : SUGGESTION --> BOOL
-
-INITIALISATION suggestionsi := SUGGESTION*{FALSE}
+    suggestionsi : SUGGESTION --> OWNER &
+    !pp . (pp:dom(suggestions) => 
+           suggestions(pp) = suggestionsi(pp))
+INITIALISATION suggestionsi := SUGGESTION*{DEFAULT_OWNER}
 
 OPERATIONS
-  add_suggestion(suggestion) =
+  add_suggestion(suggestion, oo) =
     BEGIN
-        suggestionsi(suggestion) := TRUE
+        suggestionsi(suggestion) := oo
     END;
 
 
   remove_suggestion(suggestion) =
     BEGIN
-        suggestionsi(suggestion) := FALSE
+        suggestionsi(suggestion) := DEFAULT_OWNER
     END
 
  END

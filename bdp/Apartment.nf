@@ -13,7 +13,7 @@ THEORY LoadedStructureX IS
 END
 &
 THEORY ListSeesX IS
-  List_Sees(Machine(Apartment))==(Owner,Vehicle)
+  List_Sees(Machine(Apartment))==(Owner_Context,Vehicle)
 END
 &
 THEORY ListUsesX IS
@@ -56,7 +56,7 @@ THEORY ListInvariantX IS
   Gluing_List_Invariant(Machine(Apartment))==(btrue);
   Expanded_List_Invariant(Machine(Apartment))==(btrue);
   Abstract_List_Invariant(Machine(Apartment))==(btrue);
-  Context_List_Invariant(Machine(Apartment))==(owner <: OWNER & owner_suggestions: OWNER +-> SUGGESTION & vehicles: VEHICLE_PLATE --> PERMITION);
+  Context_List_Invariant(Machine(Apartment))==(vehicles: VEHICLE_PLATE --> PERMITION);
   List_Invariant(Machine(Apartment))==(apartments: NUMBER +-> OWNER & apartment_vehicles: NUMBER +-> VEHICLE_PLATE)
 END
 &
@@ -86,7 +86,7 @@ THEORY ListParametersX IS
 END
 &
 THEORY ListInstanciatedParametersX IS
-  List_Instanciated_Parameters(Machine(Apartment),Machine(Owner))==(?);
+  List_Instanciated_Parameters(Machine(Apartment),Machine(Owner_Context))==(?);
   List_Instanciated_Parameters(Machine(Apartment),Machine(Vehicle))==(?)
 END
 &
@@ -101,8 +101,8 @@ THEORY ListOperationsX IS
 END
 &
 THEORY ListInputX IS
-  List_Input(Machine(Apartment),add_apart_to_owner)==(number,owner1);
-  List_Input(Machine(Apartment),remove_owner_from_apartment)==(number)
+  List_Input(Machine(Apartment),add_apart_to_owner)==(nn,oo);
+  List_Input(Machine(Apartment),remove_owner_from_apartment)==(nn)
 END
 &
 THEORY ListOutputX IS
@@ -111,22 +111,22 @@ THEORY ListOutputX IS
 END
 &
 THEORY ListHeaderX IS
-  List_Header(Machine(Apartment),add_apart_to_owner)==(add_apart_to_owner(number,owner1));
-  List_Header(Machine(Apartment),remove_owner_from_apartment)==(remove_owner_from_apartment(number))
+  List_Header(Machine(Apartment),add_apart_to_owner)==(add_apart_to_owner(nn,oo));
+  List_Header(Machine(Apartment),remove_owner_from_apartment)==(remove_owner_from_apartment(nn))
 END
 &
 THEORY ListOperationGuardX END
 &
 THEORY ListPreconditionX IS
-  List_Precondition(Machine(Apartment),add_apart_to_owner)==(number: NUMBER & owner1: OWNER);
-  List_Precondition(Machine(Apartment),remove_owner_from_apartment)==(number: NUMBER)
+  List_Precondition(Machine(Apartment),add_apart_to_owner)==(nn: NUMBER & oo: OWNER);
+  List_Precondition(Machine(Apartment),remove_owner_from_apartment)==(nn: NUMBER)
 END
 &
 THEORY ListSubstitutionX IS
-  Expanded_List_Substitution(Machine(Apartment),remove_owner_from_apartment)==(number: NUMBER | apartments,apartment_vehicles:=apartments-{number|->apartments(number)},apartment_vehicles-{number|->apartment_vehicles(number)});
-  Expanded_List_Substitution(Machine(Apartment),add_apart_to_owner)==(number: NUMBER & owner1: OWNER | apartments:=apartments<+{number|->owner1});
-  List_Substitution(Machine(Apartment),add_apart_to_owner)==(apartments:=apartments<+{number|->owner1});
-  List_Substitution(Machine(Apartment),remove_owner_from_apartment)==(apartments:=apartments-{number|->apartments(number)} || apartment_vehicles:=apartment_vehicles-{number|->apartment_vehicles(number)})
+  Expanded_List_Substitution(Machine(Apartment),remove_owner_from_apartment)==(nn: NUMBER | apartments,apartment_vehicles:=apartments-{nn|->apartments(nn)},apartment_vehicles-{nn|->apartment_vehicles(nn)});
+  Expanded_List_Substitution(Machine(Apartment),add_apart_to_owner)==(nn: NUMBER & oo: OWNER | apartments:=apartments<+{nn|->oo});
+  List_Substitution(Machine(Apartment),add_apart_to_owner)==(apartments:=apartments<+{nn|->oo});
+  List_Substitution(Machine(Apartment),remove_owner_from_apartment)==(apartments:=apartments-{nn|->apartments(nn)} || apartment_vehicles:=apartment_vehicles-{nn|->apartment_vehicles(nn)})
 END
 &
 THEORY ListConstantsX IS
@@ -136,7 +136,7 @@ THEORY ListConstantsX IS
 END
 &
 THEORY ListSetsX IS
-  Set_Definition(Machine(Apartment),PERMITION)==({permitted});
+  Set_Definition(Machine(Apartment),PERMITION)==({permitted,unpermitted});
   Context_List_Enumerated(Machine(Apartment))==(PERMITION);
   Context_List_Defered(Machine(Apartment))==(OWNER,VEHICLE_PLATE);
   Context_List_Sets(Machine(Apartment))==(OWNER,VEHICLE_PLATE,PERMITION);
@@ -159,7 +159,7 @@ END
 &
 THEORY ListPropertiesX IS
   Abstract_List_Properties(Machine(Apartment))==(btrue);
-  Context_List_Properties(Machine(Apartment))==(OWNER: FIN(INTEGER) & not(OWNER = {}) & VEHICLE_PLATE: FIN(INTEGER) & not(VEHICLE_PLATE = {}) & PERMITION: FIN(INTEGER) & not(PERMITION = {}));
+  Context_List_Properties(Machine(Apartment))==(DEFAULT_OWNER: OWNER & OWNER: FIN(INTEGER) & not(OWNER = {}) & VEHICLE_PLATE: FIN(INTEGER) & not(VEHICLE_PLATE = {}) & PERMITION: FIN(INTEGER) & not(PERMITION = {}));
   Inherited_List_Properties(Machine(Apartment))==(btrue);
   List_Properties(Machine(Apartment))==(NUMBER: FIN(INTEGER) & not(NUMBER = {}))
 END
@@ -167,25 +167,19 @@ END
 THEORY ListSeenInfoX IS
   Seen_Internal_List_Operations(Machine(Apartment),Machine(Vehicle))==(add_vehicle,remove_vehicle);
   Seen_Context_List_Enumerated(Machine(Apartment))==(?);
-  Seen_Context_List_Invariant(Machine(Apartment))==(suggestions <: SUGGESTION & owner <: OWNER & owner_suggestions: OWNER +-> SUGGESTION);
+  Seen_Context_List_Invariant(Machine(Apartment))==(btrue);
   Seen_Context_List_Assertions(Machine(Apartment))==(btrue);
-  Seen_Context_List_Properties(Machine(Apartment))==(SUGGESTION: FIN(INTEGER) & not(SUGGESTION = {}) & OWNER: FIN(INTEGER) & not(OWNER = {}));
+  Seen_Context_List_Properties(Machine(Apartment))==(btrue);
   Seen_List_Constraints(Machine(Apartment))==(btrue);
-  Seen_List_Precondition(Machine(Apartment),remove_vehicle)==(plate: VEHICLE_PLATE & vehicles(plate)/:{});
-  Seen_Expanded_List_Substitution(Machine(Apartment),remove_vehicle)==(vehicles:=vehicles-{plate|->permitted});
+  Seen_List_Precondition(Machine(Apartment),remove_vehicle)==(plate: VEHICLE_PLATE & vehicles(plate): {permitted});
+  Seen_Expanded_List_Substitution(Machine(Apartment),remove_vehicle)==(vehicles:=vehicles<+{plate|->unpermitted});
   Seen_List_Precondition(Machine(Apartment),add_vehicle)==(plate: VEHICLE_PLATE);
   Seen_Expanded_List_Substitution(Machine(Apartment),add_vehicle)==(vehicles:=vehicles<+{plate|->permitted});
   Seen_List_Operations(Machine(Apartment),Machine(Vehicle))==(add_vehicle,remove_vehicle);
   Seen_Expanded_List_Invariant(Machine(Apartment),Machine(Vehicle))==(btrue);
-  Seen_Internal_List_Operations(Machine(Apartment),Machine(Owner))==(add_owner,remove_owner,add_owner_suggestion);
-  Seen_List_Precondition(Machine(Apartment),add_owner_suggestion)==(oo: OWNER & suggestion: SUGGESTION);
-  Seen_Expanded_List_Substitution(Machine(Apartment),add_owner_suggestion)==(owner_suggestions:=owner_suggestions<+{oo|->suggestion});
-  Seen_List_Precondition(Machine(Apartment),remove_owner)==(oo: OWNER & oo: owner);
-  Seen_Expanded_List_Substitution(Machine(Apartment),remove_owner)==(owner:=owner-{oo});
-  Seen_List_Precondition(Machine(Apartment),add_owner)==(oo: OWNER & oo/:owner);
-  Seen_Expanded_List_Substitution(Machine(Apartment),add_owner)==(owner:=owner\/{oo});
-  Seen_List_Operations(Machine(Apartment),Machine(Owner))==(add_owner,remove_owner,add_owner_suggestion);
-  Seen_Expanded_List_Invariant(Machine(Apartment),Machine(Owner))==(btrue)
+  Seen_Internal_List_Operations(Machine(Apartment),Machine(Owner_Context))==(?);
+  Seen_List_Operations(Machine(Apartment),Machine(Owner_Context))==(?);
+  Seen_Expanded_List_Invariant(Machine(Apartment),Machine(Owner_Context))==(btrue)
 END
 &
 THEORY ListANYVarX IS
@@ -194,26 +188,21 @@ THEORY ListANYVarX IS
 END
 &
 THEORY ListOfIdsX IS
-  List_Of_Ids(Machine(Apartment)) == (NUMBER | ? | apartment_vehicles,apartments | ? | add_apart_to_owner,remove_owner_from_apartment | ? | seen(Machine(Owner)),seen(Machine(Vehicle)) | ? | Apartment);
+  List_Of_Ids(Machine(Apartment)) == (NUMBER | ? | apartment_vehicles,apartments | ? | add_apart_to_owner,remove_owner_from_apartment | ? | seen(Machine(Owner_Context)),seen(Machine(Vehicle)) | ? | Apartment);
   List_Of_HiddenCst_Ids(Machine(Apartment)) == (? | ?);
   List_Of_VisibleCst_Ids(Machine(Apartment)) == (?);
   List_Of_VisibleVar_Ids(Machine(Apartment)) == (? | ?);
   List_Of_Ids_SeenBNU(Machine(Apartment)) == (?: ?);
-  List_Of_Ids(Machine(Vehicle)) == (VEHICLE_PLATE,PERMITION,permitted | ? | vehicles | ? | add_vehicle,remove_vehicle | ? | seen(Machine(Owner)) | ? | Vehicle);
+  List_Of_Ids(Machine(Vehicle)) == (VEHICLE_PLATE,PERMITION,permitted,unpermitted | ? | vehicles | ? | add_vehicle,remove_vehicle | ? | ? | ? | Vehicle);
   List_Of_HiddenCst_Ids(Machine(Vehicle)) == (? | ?);
   List_Of_VisibleCst_Ids(Machine(Vehicle)) == (?);
   List_Of_VisibleVar_Ids(Machine(Vehicle)) == (? | ?);
   List_Of_Ids_SeenBNU(Machine(Vehicle)) == (?: ?);
-  List_Of_Ids(Machine(Owner)) == (OWNER | ? | owner_suggestions,owner | ? | add_owner,remove_owner,add_owner_suggestion | ? | seen(Machine(Suggestion)) | ? | Owner);
-  List_Of_HiddenCst_Ids(Machine(Owner)) == (? | ?);
-  List_Of_VisibleCst_Ids(Machine(Owner)) == (?);
-  List_Of_VisibleVar_Ids(Machine(Owner)) == (? | ?);
-  List_Of_Ids_SeenBNU(Machine(Owner)) == (?: ?);
-  List_Of_Ids(Machine(Suggestion)) == (SUGGESTION | ? | suggestions | ? | add_suggestion,remove_suggestion | ? | ? | ? | Suggestion);
-  List_Of_HiddenCst_Ids(Machine(Suggestion)) == (? | ?);
-  List_Of_VisibleCst_Ids(Machine(Suggestion)) == (?);
-  List_Of_VisibleVar_Ids(Machine(Suggestion)) == (? | ?);
-  List_Of_Ids_SeenBNU(Machine(Suggestion)) == (?: ?)
+  List_Of_Ids(Machine(Owner_Context)) == (DEFAULT_OWNER,OWNER | ? | ? | ? | ? | ? | ? | ? | Owner_Context);
+  List_Of_HiddenCst_Ids(Machine(Owner_Context)) == (? | ?);
+  List_Of_VisibleCst_Ids(Machine(Owner_Context)) == (DEFAULT_OWNER);
+  List_Of_VisibleVar_Ids(Machine(Owner_Context)) == (? | ?);
+  List_Of_Ids_SeenBNU(Machine(Owner_Context)) == (?: ?)
 END
 &
 THEORY SetsEnvX IS

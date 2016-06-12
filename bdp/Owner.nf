@@ -13,7 +13,7 @@ THEORY LoadedStructureX IS
 END
 &
 THEORY ListSeesX IS
-  List_Sees(Machine(Owner))==(Suggestion)
+  List_Sees(Machine(Owner))==(Owner_Context)
 END
 &
 THEORY ListUsesX IS
@@ -37,9 +37,9 @@ THEORY ListVariablesX IS
   External_Context_List_Variables(Machine(Owner))==(?);
   Context_List_Variables(Machine(Owner))==(?);
   Abstract_List_Variables(Machine(Owner))==(?);
-  Local_List_Variables(Machine(Owner))==(owner_suggestions,owner);
-  List_Variables(Machine(Owner))==(owner_suggestions,owner);
-  External_List_Variables(Machine(Owner))==(owner_suggestions,owner)
+  Local_List_Variables(Machine(Owner))==(owner);
+  List_Variables(Machine(Owner))==(owner);
+  External_List_Variables(Machine(Owner))==(owner)
 END
 &
 THEORY ListVisibleVariablesX IS
@@ -56,8 +56,8 @@ THEORY ListInvariantX IS
   Gluing_List_Invariant(Machine(Owner))==(btrue);
   Expanded_List_Invariant(Machine(Owner))==(btrue);
   Abstract_List_Invariant(Machine(Owner))==(btrue);
-  Context_List_Invariant(Machine(Owner))==(suggestions <: SUGGESTION);
-  List_Invariant(Machine(Owner))==(owner <: OWNER & owner_suggestions: OWNER +-> SUGGESTION)
+  Context_List_Invariant(Machine(Owner))==(btrue);
+  List_Invariant(Machine(Owner))==(owner <: OWNER)
 END
 &
 THEORY ListAssertionsX IS
@@ -76,9 +76,9 @@ THEORY ListExclusivityX IS
 END
 &
 THEORY ListInitialisationX IS
-  Expanded_List_Initialisation(Machine(Owner))==(owner,owner_suggestions:={},{});
+  Expanded_List_Initialisation(Machine(Owner))==(owner:={});
   Context_List_Initialisation(Machine(Owner))==(skip);
-  List_Initialisation(Machine(Owner))==(owner:={} || owner_suggestions:={})
+  List_Initialisation(Machine(Owner))==(owner:={})
 END
 &
 THEORY ListParametersX IS
@@ -86,7 +86,7 @@ THEORY ListParametersX IS
 END
 &
 THEORY ListInstanciatedParametersX IS
-  List_Instanciated_Parameters(Machine(Owner),Machine(Suggestion))==(?)
+  List_Instanciated_Parameters(Machine(Owner),Machine(Owner_Context))==(?)
 END
 &
 THEORY ListConstraintsX IS
@@ -95,43 +95,37 @@ THEORY ListConstraintsX IS
 END
 &
 THEORY ListOperationsX IS
-  Internal_List_Operations(Machine(Owner))==(add_owner,remove_owner,add_owner_suggestion);
-  List_Operations(Machine(Owner))==(add_owner,remove_owner,add_owner_suggestion)
+  Internal_List_Operations(Machine(Owner))==(add_owner,remove_owner);
+  List_Operations(Machine(Owner))==(add_owner,remove_owner)
 END
 &
 THEORY ListInputX IS
   List_Input(Machine(Owner),add_owner)==(oo);
-  List_Input(Machine(Owner),remove_owner)==(oo);
-  List_Input(Machine(Owner),add_owner_suggestion)==(oo,suggestion)
+  List_Input(Machine(Owner),remove_owner)==(oo)
 END
 &
 THEORY ListOutputX IS
   List_Output(Machine(Owner),add_owner)==(?);
-  List_Output(Machine(Owner),remove_owner)==(?);
-  List_Output(Machine(Owner),add_owner_suggestion)==(?)
+  List_Output(Machine(Owner),remove_owner)==(?)
 END
 &
 THEORY ListHeaderX IS
   List_Header(Machine(Owner),add_owner)==(add_owner(oo));
-  List_Header(Machine(Owner),remove_owner)==(remove_owner(oo));
-  List_Header(Machine(Owner),add_owner_suggestion)==(add_owner_suggestion(oo,suggestion))
+  List_Header(Machine(Owner),remove_owner)==(remove_owner(oo))
 END
 &
 THEORY ListOperationGuardX END
 &
 THEORY ListPreconditionX IS
   List_Precondition(Machine(Owner),add_owner)==(oo: OWNER & oo/:owner);
-  List_Precondition(Machine(Owner),remove_owner)==(oo: OWNER & oo: owner);
-  List_Precondition(Machine(Owner),add_owner_suggestion)==(oo: OWNER & suggestion: SUGGESTION)
+  List_Precondition(Machine(Owner),remove_owner)==(oo: OWNER & oo: owner)
 END
 &
 THEORY ListSubstitutionX IS
-  Expanded_List_Substitution(Machine(Owner),add_owner_suggestion)==(oo: OWNER & suggestion: SUGGESTION | owner_suggestions:=owner_suggestions<+{oo|->suggestion});
   Expanded_List_Substitution(Machine(Owner),remove_owner)==(oo: OWNER & oo: owner | owner:=owner-{oo});
   Expanded_List_Substitution(Machine(Owner),add_owner)==(oo: OWNER & oo/:owner | owner:=owner\/{oo});
   List_Substitution(Machine(Owner),add_owner)==(owner:=owner\/{oo});
-  List_Substitution(Machine(Owner),remove_owner)==(owner:=owner-{oo});
-  List_Substitution(Machine(Owner),add_owner_suggestion)==(owner_suggestions:=owner_suggestions<+{oo|->suggestion})
+  List_Substitution(Machine(Owner),remove_owner)==(owner:=owner-{oo})
 END
 &
 THEORY ListConstantsX IS
@@ -141,17 +135,16 @@ THEORY ListConstantsX IS
 END
 &
 THEORY ListSetsX IS
-  Set_Definition(Machine(Owner),OWNER)==(?);
   Context_List_Enumerated(Machine(Owner))==(?);
-  Context_List_Defered(Machine(Owner))==(SUGGESTION);
-  Context_List_Sets(Machine(Owner))==(SUGGESTION);
-  List_Valuable_Sets(Machine(Owner))==(OWNER);
+  Context_List_Defered(Machine(Owner))==(OWNER);
+  Context_List_Sets(Machine(Owner))==(OWNER);
+  List_Valuable_Sets(Machine(Owner))==(?);
   Inherited_List_Enumerated(Machine(Owner))==(?);
   Inherited_List_Defered(Machine(Owner))==(?);
   Inherited_List_Sets(Machine(Owner))==(?);
   List_Enumerated(Machine(Owner))==(?);
-  List_Defered(Machine(Owner))==(OWNER);
-  List_Sets(Machine(Owner))==(OWNER)
+  List_Defered(Machine(Owner))==(?);
+  List_Sets(Machine(Owner))==(?)
 END
 &
 THEORY ListHiddenConstantsX IS
@@ -163,55 +156,46 @@ END
 &
 THEORY ListPropertiesX IS
   Abstract_List_Properties(Machine(Owner))==(btrue);
-  Context_List_Properties(Machine(Owner))==(SUGGESTION: FIN(INTEGER) & not(SUGGESTION = {}));
+  Context_List_Properties(Machine(Owner))==(DEFAULT_OWNER: OWNER & OWNER: FIN(INTEGER) & not(OWNER = {}));
   Inherited_List_Properties(Machine(Owner))==(btrue);
-  List_Properties(Machine(Owner))==(OWNER: FIN(INTEGER) & not(OWNER = {}))
+  List_Properties(Machine(Owner))==(btrue)
 END
 &
 THEORY ListSeenInfoX IS
-  Seen_Internal_List_Operations(Machine(Owner),Machine(Suggestion))==(add_suggestion,remove_suggestion);
+  Seen_Internal_List_Operations(Machine(Owner),Machine(Owner_Context))==(?);
   Seen_Context_List_Enumerated(Machine(Owner))==(?);
   Seen_Context_List_Invariant(Machine(Owner))==(btrue);
   Seen_Context_List_Assertions(Machine(Owner))==(btrue);
   Seen_Context_List_Properties(Machine(Owner))==(btrue);
   Seen_List_Constraints(Machine(Owner))==(btrue);
-  Seen_List_Precondition(Machine(Owner),remove_suggestion)==(suggestion: SUGGESTION & suggestion: suggestions);
-  Seen_Expanded_List_Substitution(Machine(Owner),remove_suggestion)==(suggestions:=suggestions-{suggestion});
-  Seen_List_Precondition(Machine(Owner),add_suggestion)==(suggestion: SUGGESTION);
-  Seen_Expanded_List_Substitution(Machine(Owner),add_suggestion)==(suggestions:=suggestions\/{suggestion});
-  Seen_List_Operations(Machine(Owner),Machine(Suggestion))==(add_suggestion,remove_suggestion);
-  Seen_Expanded_List_Invariant(Machine(Owner),Machine(Suggestion))==(btrue)
+  Seen_List_Operations(Machine(Owner),Machine(Owner_Context))==(?);
+  Seen_Expanded_List_Invariant(Machine(Owner),Machine(Owner_Context))==(btrue)
 END
 &
 THEORY ListANYVarX IS
   List_ANY_Var(Machine(Owner),add_owner)==(?);
-  List_ANY_Var(Machine(Owner),remove_owner)==(?);
-  List_ANY_Var(Machine(Owner),add_owner_suggestion)==(?)
+  List_ANY_Var(Machine(Owner),remove_owner)==(?)
 END
 &
 THEORY ListOfIdsX IS
-  List_Of_Ids(Machine(Owner)) == (OWNER | ? | owner_suggestions,owner | ? | add_owner,remove_owner,add_owner_suggestion | ? | seen(Machine(Suggestion)) | ? | Owner);
+  List_Of_Ids(Machine(Owner)) == (? | ? | owner | ? | add_owner,remove_owner | ? | seen(Machine(Owner_Context)) | ? | Owner);
   List_Of_HiddenCst_Ids(Machine(Owner)) == (? | ?);
   List_Of_VisibleCst_Ids(Machine(Owner)) == (?);
   List_Of_VisibleVar_Ids(Machine(Owner)) == (? | ?);
   List_Of_Ids_SeenBNU(Machine(Owner)) == (?: ?);
-  List_Of_Ids(Machine(Suggestion)) == (SUGGESTION | ? | suggestions | ? | add_suggestion,remove_suggestion | ? | ? | ? | Suggestion);
-  List_Of_HiddenCst_Ids(Machine(Suggestion)) == (? | ?);
-  List_Of_VisibleCst_Ids(Machine(Suggestion)) == (?);
-  List_Of_VisibleVar_Ids(Machine(Suggestion)) == (? | ?);
-  List_Of_Ids_SeenBNU(Machine(Suggestion)) == (?: ?)
-END
-&
-THEORY SetsEnvX IS
-  Sets(Machine(Owner)) == (Type(OWNER) == Cst(SetOf(atype(OWNER,"[OWNER","]OWNER"))))
+  List_Of_Ids(Machine(Owner_Context)) == (DEFAULT_OWNER,OWNER | ? | ? | ? | ? | ? | ? | ? | Owner_Context);
+  List_Of_HiddenCst_Ids(Machine(Owner_Context)) == (? | ?);
+  List_Of_VisibleCst_Ids(Machine(Owner_Context)) == (DEFAULT_OWNER);
+  List_Of_VisibleVar_Ids(Machine(Owner_Context)) == (? | ?);
+  List_Of_Ids_SeenBNU(Machine(Owner_Context)) == (?: ?)
 END
 &
 THEORY VariablesEnvX IS
-  Variables(Machine(Owner)) == (Type(owner_suggestions) == Mvl(SetOf(atype(OWNER,?,?)*atype(SUGGESTION,?,?)));Type(owner) == Mvl(SetOf(atype(OWNER,?,?))))
+  Variables(Machine(Owner)) == (Type(owner) == Mvl(SetOf(atype(OWNER,?,?))))
 END
 &
 THEORY OperationsEnvX IS
-  Operations(Machine(Owner)) == (Type(add_owner_suggestion) == Cst(No_type,atype(OWNER,?,?)*atype(SUGGESTION,?,?));Type(remove_owner) == Cst(No_type,atype(OWNER,?,?));Type(add_owner) == Cst(No_type,atype(OWNER,?,?)))
+  Operations(Machine(Owner)) == (Type(remove_owner) == Cst(No_type,atype(OWNER,?,?));Type(add_owner) == Cst(No_type,atype(OWNER,?,?)))
 END
 &
 THEORY TCIntRdX IS

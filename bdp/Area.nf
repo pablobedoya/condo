@@ -13,7 +13,7 @@ THEORY LoadedStructureX IS
 END
 &
 THEORY ListSeesX IS
-  List_Sees(Machine(Area))==(?)
+  List_Sees(Machine(Area))==(Area_Context)
 END
 &
 THEORY ListUsesX IS
@@ -85,7 +85,9 @@ THEORY ListParametersX IS
   List_Parameters(Machine(Area))==(?)
 END
 &
-THEORY ListInstanciatedParametersX END
+THEORY ListInstanciatedParametersX IS
+  List_Instanciated_Parameters(Machine(Area),Machine(Area_Context))==(?)
+END
 &
 THEORY ListConstraintsX IS
   List_Context_Constraints(Machine(Area))==(btrue);
@@ -133,17 +135,16 @@ THEORY ListConstantsX IS
 END
 &
 THEORY ListSetsX IS
-  Set_Definition(Machine(Area),AREA)==(?);
   Context_List_Enumerated(Machine(Area))==(?);
-  Context_List_Defered(Machine(Area))==(?);
-  Context_List_Sets(Machine(Area))==(?);
-  List_Valuable_Sets(Machine(Area))==(AREA);
+  Context_List_Defered(Machine(Area))==(AREA);
+  Context_List_Sets(Machine(Area))==(AREA);
+  List_Valuable_Sets(Machine(Area))==(?);
   Inherited_List_Enumerated(Machine(Area))==(?);
   Inherited_List_Defered(Machine(Area))==(?);
   Inherited_List_Sets(Machine(Area))==(?);
   List_Enumerated(Machine(Area))==(?);
-  List_Defered(Machine(Area))==(AREA);
-  List_Sets(Machine(Area))==(AREA)
+  List_Defered(Machine(Area))==(?);
+  List_Sets(Machine(Area))==(?)
 END
 &
 THEORY ListHiddenConstantsX IS
@@ -155,12 +156,21 @@ END
 &
 THEORY ListPropertiesX IS
   Abstract_List_Properties(Machine(Area))==(btrue);
-  Context_List_Properties(Machine(Area))==(btrue);
+  Context_List_Properties(Machine(Area))==(DEFAULT_AREA: AREA & AREA: FIN(INTEGER) & not(AREA = {}));
   Inherited_List_Properties(Machine(Area))==(btrue);
-  List_Properties(Machine(Area))==(AREA: FIN(INTEGER) & not(AREA = {}))
+  List_Properties(Machine(Area))==(btrue)
 END
 &
-THEORY ListSeenInfoX END
+THEORY ListSeenInfoX IS
+  Seen_Internal_List_Operations(Machine(Area),Machine(Area_Context))==(?);
+  Seen_Context_List_Enumerated(Machine(Area))==(?);
+  Seen_Context_List_Invariant(Machine(Area))==(btrue);
+  Seen_Context_List_Assertions(Machine(Area))==(btrue);
+  Seen_Context_List_Properties(Machine(Area))==(btrue);
+  Seen_List_Constraints(Machine(Area))==(btrue);
+  Seen_List_Operations(Machine(Area),Machine(Area_Context))==(?);
+  Seen_Expanded_List_Invariant(Machine(Area),Machine(Area_Context))==(btrue)
+END
 &
 THEORY ListANYVarX IS
   List_ANY_Var(Machine(Area),add_area)==(?);
@@ -168,15 +178,16 @@ THEORY ListANYVarX IS
 END
 &
 THEORY ListOfIdsX IS
-  List_Of_Ids(Machine(Area)) == (AREA | ? | area | ? | add_area,remove_area | ? | ? | ? | Area);
+  List_Of_Ids(Machine(Area)) == (? | ? | area | ? | add_area,remove_area | ? | seen(Machine(Area_Context)) | ? | Area);
   List_Of_HiddenCst_Ids(Machine(Area)) == (? | ?);
   List_Of_VisibleCst_Ids(Machine(Area)) == (?);
   List_Of_VisibleVar_Ids(Machine(Area)) == (? | ?);
-  List_Of_Ids_SeenBNU(Machine(Area)) == (?: ?)
-END
-&
-THEORY SetsEnvX IS
-  Sets(Machine(Area)) == (Type(AREA) == Cst(SetOf(atype(AREA,"[AREA","]AREA"))))
+  List_Of_Ids_SeenBNU(Machine(Area)) == (?: ?);
+  List_Of_Ids(Machine(Area_Context)) == (DEFAULT_AREA,AREA | ? | ? | ? | ? | ? | ? | ? | Area_Context);
+  List_Of_HiddenCst_Ids(Machine(Area_Context)) == (? | ?);
+  List_Of_VisibleCst_Ids(Machine(Area_Context)) == (DEFAULT_AREA);
+  List_Of_VisibleVar_Ids(Machine(Area_Context)) == (? | ?);
+  List_Of_Ids_SeenBNU(Machine(Area_Context)) == (?: ?)
 END
 &
 THEORY VariablesEnvX IS

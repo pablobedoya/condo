@@ -1,0 +1,12 @@
+﻿/* Owner_Context_i
+ * Author: 
+ * Creation date: 12/06/2016
+ */
+
+IMPLEMENTATION Owner_Context_i
+REFINES Owner_Context
+VALUES
+    OWNER = 0 .. 4 ;
+    DEFAULT_OWNER = 0
+
+ END

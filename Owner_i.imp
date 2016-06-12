@@ -1,0 +1,61 @@
+/* Owner_i
+ * Author: 
+ * Creation date: 11/06/2016
+ */
+
+IMPLEMENTATION Owner_i
+REFINES Owner
+SEES Owner_Context
+CONCRETE_VARIABLES owneri
+INVARIANT
+    owneri : OWNER --> BOOL &
+    dom(owneri |> {TRUE}) = owner
+
+INITIALISATION owneri := OWNER*{FALSE}
+
+OPERATIONS
+  add_owner(oo) =
+    BEGIN
+        owneri(oo) := TRUE
+    END;
+
+
+  remove_owner(oo) =
+    BEGIN
+        owneri(oo) := FALSE
+    END
+
+ END
+ 
+ /*
+ CONCRETE_VARIABLES owneri, owner_suggestionsi
+    
+INVARIANT
+    owneri : OWNER --> BOOL & owner_suggestionsi : OWNER --> SUGGESTION &
+    !pp . (pp:dom(owner_suggestions) => 
+           owner_suggestions(pp) = owner_suggestionsi(pp)) &
+    dom(owneri |> {TRUE}) = owner
+
+INITIALISATION owneri := OWNER*{FALSE};
+    owner_suggestionsi := OWNER*{DEFAULT_SUGGESTION}
+
+OPERATIONS
+  add_owner(oo) =
+    BEGIN
+        owneri(oo) := TRUE
+    END;
+
+
+  remove_owner(oo) =
+    BEGIN
+        owneri(oo) := FALSE
+    END;
+
+    
+  add_owner_suggestion(oo, ss) =
+    BEGIN
+        owner_suggestionsi(oo) := ss
+    END
+
+ END
+ */

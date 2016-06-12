@@ -1,0 +1,57 @@
+/* Condominium_i
+ * Author: 
+ * Creation date: 11/06/2016
+ */
+
+IMPLEMENTATION Condominium_i
+REFINES Condominium
+SEES Area_Context, Event_Context, Owner_Context
+IMPORTS Owner, Area
+PROMOTES add_owner, remove_owner, add_area, remove_area
+CONCRETE_VARIABLES reservedi, eventsi
+INVARIANT
+    reservedi : OWNER --> AREA & eventsi : AREA --> EVENT &
+    !rr . (rr:dom(reserved) => 
+           reserved(rr) = reservedi(rr)) &
+    !ee . (ee:dom(events) => 
+           events(ee) = eventsi(ee))
+
+INITIALISATION reservedi := OWNER*{DEFAULT_AREA}; eventsi := AREA*{DEFAULT_EVENT}
+
+OPERATIONS
+  create_owner(oo) =
+    BEGIN
+        add_owner(oo)
+    END;
+
+
+  create_area(aa) =
+    BEGIN
+        add_area(aa)
+    END;
+
+
+  book_area (oo, aa) =
+    BEGIN
+        reservedi(oo) := aa
+    END;
+
+
+  cancel_booking (oo, aa) =
+    BEGIN
+        reservedi(oo) := DEFAULT_AREA
+    END;
+
+
+  add_event(aa, ee) =
+    BEGIN
+        eventsi(aa) := ee
+    END;
+
+
+  remove_event(aa, ee) =
+    BEGIN
+        eventsi(aa) := DEFAULT_EVENT
+    END
+
+ END

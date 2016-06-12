@@ -98,7 +98,7 @@ THEORY ListOperationsX IS
 END
 &
 THEORY ListInputX IS
-  List_Input(Machine(Employee),add_emp)==(name,role);
+  List_Input(Machine(Employee),add_emp)==(name);
   List_Input(Machine(Employee),remove_emp)==(name);
   List_Input(Machine(Employee),change_role)==(name,new_role)
 END
@@ -110,7 +110,7 @@ THEORY ListOutputX IS
 END
 &
 THEORY ListHeaderX IS
-  List_Header(Machine(Employee),add_emp)==(add_emp(name,role));
+  List_Header(Machine(Employee),add_emp)==(add_emp(name));
   List_Header(Machine(Employee),remove_emp)==(remove_emp(name));
   List_Header(Machine(Employee),change_role)==(change_role(name,new_role))
 END
@@ -118,7 +118,7 @@ END
 THEORY ListOperationGuardX END
 &
 THEORY ListPreconditionX IS
-  List_Precondition(Machine(Employee),add_emp)==(name: NAME & employees(name): {} & role: ROLES);
+  List_Precondition(Machine(Employee),add_emp)==(name: NAME & employees(name): {no_permition});
   List_Precondition(Machine(Employee),remove_emp)==(name: NAME & employees(name): {permition});
   List_Precondition(Machine(Employee),change_role)==(name: NAME & new_role: ROLES & employees(name)/=new_role)
 END
@@ -126,17 +126,10 @@ END
 THEORY ListSubstitutionX IS
   Expanded_List_Substitution(Machine(Employee),change_role)==(name: NAME & new_role: ROLES & employees(name)/=new_role | employees:=employees<+{name|->new_role});
   Expanded_List_Substitution(Machine(Employee),remove_emp)==(name: NAME & employees(name): {permition} | employees:=employees<+{name|->no_permition});
-<<<<<<< HEAD
-  Expanded_List_Substitution(Machine(Employee),add_emp)==(name: NAME & employees(name): {} & role: ROLES | employees:=employees<+{name|->role});
-  List_Substitution(Machine(Employee),add_emp)==(employees(name):=role);
-  List_Substitution(Machine(Employee),remove_emp)==(employees(name):=no_permition);
-  List_Substitution(Machine(Employee),change_role)==(employees(name):=new_role)
-=======
-  Expanded_List_Substitution(Machine(Employee),add_emp)==(name: NAME & employees(name): {} & role: ROLES | employees:={name|->role});
-  List_Substitution(Machine(Employee),add_emp)==(employees:={name|->role});
+  Expanded_List_Substitution(Machine(Employee),add_emp)==(name: NAME & employees(name): {no_permition} | employees:=employees<+{name|->permition});
+  List_Substitution(Machine(Employee),add_emp)==(employees:=employees<+{name|->permition});
   List_Substitution(Machine(Employee),remove_emp)==(employees:=employees<+{name|->no_permition});
   List_Substitution(Machine(Employee),change_role)==(employees:=employees<+{name|->new_role})
->>>>>>> cd5dc82c81be5499a5f169c6534fd38c5757a6b0
 END
 &
 THEORY ListConstantsX IS
@@ -203,7 +196,7 @@ THEORY VariablesEnvX IS
 END
 &
 THEORY OperationsEnvX IS
-  Operations(Machine(Employee)) == (Type(change_role) == Cst(No_type,atype(NAME,?,?)*etype(ROLES,?,?));Type(remove_emp) == Cst(No_type,atype(NAME,?,?));Type(add_emp) == Cst(No_type,atype(NAME,?,?)*etype(ROLES,?,?)))
+  Operations(Machine(Employee)) == (Type(change_role) == Cst(No_type,atype(NAME,?,?)*etype(ROLES,?,?));Type(remove_emp) == Cst(No_type,atype(NAME,?,?));Type(add_emp) == Cst(No_type,atype(NAME,?,?)))
 END
 &
 THEORY TCIntRdX IS
