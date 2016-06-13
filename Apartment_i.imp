@@ -1,0 +1,33 @@
+/* Apartment_i
+ * Author: User
+ * Creation date: 13/06/2016
+ */
+
+IMPLEMENTATION Apartment_i
+REFINES Apartment
+VALUES NUMBER = 0..3
+SEES Owner_Context, Vehicle_Context
+CONCRETE_VARIABLES apartmentsi, apartment_vehiclesi
+INVARIANT
+    apartmentsi : NUMBER --> OWNER &
+    apartment_vehiclesi : NUMBER --> VEHICLE_PLATE &
+    !aa . (aa:dom(apartments) => 
+           apartments(aa) = apartmentsi(aa)) &
+    !av . (av:dom(apartment_vehicles) => 
+           apartment_vehicles(av) = apartment_vehiclesi(av))
+INITIALISATION apartmentsi := NUMBER*{DEFAULT_OWNER}; apartment_vehiclesi := NUMBER*{DEFAULT_VEHICLE}
+
+OPERATIONS
+    add_apart_to_owner(nn, oo) =
+    BEGIN
+        apartmentsi(nn) := oo
+    END;
+
+    
+    remove_owner_from_apartment(nn) =
+    BEGIN
+        apartmentsi(nn) := DEFAULT_OWNER;
+        apartment_vehiclesi(nn) := DEFAULT_VEHICLE
+    END
+
+ END

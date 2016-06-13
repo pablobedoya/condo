@@ -1,0 +1,12 @@
+/* Vehicle_Context_i
+ * Author: User
+ * Creation date: 13/06/2016
+ */
+
+IMPLEMENTATION Vehicle_Context_i
+REFINES Vehicle_Context
+VALUES
+    VEHICLE_PLATE = 0..4;
+    DEFAULT_VEHICLE = 0
+
+ END

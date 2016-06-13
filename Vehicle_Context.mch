@@ -1,0 +1,13 @@
+/* Vehicle_Context
+ * Author: User
+ * Creation date: 13/06/2016
+ */
+MACHINE
+    Vehicle_Context
+SETS
+    VEHICLE_PLATE
+CONCRETE_CONSTANTS
+    DEFAULT_VEHICLE
+PROPERTIES
+    DEFAULT_VEHICLE : VEHICLE_PLATE
+END

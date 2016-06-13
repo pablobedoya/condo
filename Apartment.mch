@@ -4,7 +4,7 @@
  */
 MACHINE
     Apartment
-SEES Owner_Context, Vehicle
+SEES Owner_Context, Vehicle_Context
 SETS NUMBER
 VARIABLES apartments, apartment_vehicles
 INVARIANT apartments : NUMBER +-> OWNER & apartment_vehicles : NUMBER +-> VEHICLE_PLATE
