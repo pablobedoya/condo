@@ -4,7 +4,8 @@
  */
 MACHINE
     Vehicle
-SETS VEHICLE_PLATE; PERMITION = {permitted, unpermitted}
+SEES Vehicle_Context
+SETS PERMITION = {permitted, unpermitted}
 VARIABLES vehicles
 INVARIANT vehicles : VEHICLE_PLATE --> PERMITION
 INITIALISATION vehicles := VEHICLE_PLATE * {unpermitted}

@@ -5,7 +5,7 @@
 
 IMPLEMENTATION Vehicle_i
 REFINES Vehicle
-VALUES VEHICLE_PLATE = 0..3
+SEES Vehicle_Context
 
 CONCRETE_VARIABLES vehiclesi
 
