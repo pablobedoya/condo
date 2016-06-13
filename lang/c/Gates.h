@@ -30,6 +30,7 @@ extern void Gates__INITIALISATION(void);
 
 extern void Gates__open_gate(Gates__GATE gg);
 extern void Gates__close_gate(Gates__GATE gg);
+extern void Gates__printquery(Gates__GATE gg, Gates__POSITION *pp);
 
 #ifdef __cplusplus
 }

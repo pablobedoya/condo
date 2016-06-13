@@ -32,3 +32,8 @@ void Gates__close_gate(Gates__GATE gg)
     Gates__positioni[gg] = Gates__closed;
 }
 
+void Gates__printquery(Gates__GATE gg, Gates__POSITION *pp)
+{
+    (*pp) = Gates__positioni[gg];
+}
+
