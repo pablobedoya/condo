@@ -7,7 +7,7 @@ IMPLEMENTATION Condominium_i
 REFINES Condominium
 SEES Area_Context, Event_Context, Owner_Context
 IMPORTS Owner, Area
-PROMOTES add_owner, remove_owner, add_area, remove_area
+PROMOTES add_owner, add_area
 CONCRETE_VARIABLES reservedi, eventsi
 INVARIANT
     reservedi : OWNER --> AREA & eventsi : AREA --> EVENT &

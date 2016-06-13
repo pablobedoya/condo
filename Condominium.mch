@@ -1,6 +1,6 @@
 MACHINE Condominium
-EXTENDS Owner, Area
-INCLUDES Event_Context, Area_Context, Owner_Context
+INCLUDES Event_Context, Area_Context, Owner_Context, Area, Owner
+PROMOTES add_owner, add_area
 VARIABLES reserved, events
 INVARIANT
  reserved : owner +-> area & events : area +-> EVENT
