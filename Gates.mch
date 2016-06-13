@@ -11,11 +11,11 @@ INVARIANT
 INITIALISATION position := GATE * {closed}
 OPERATIONS
   open_gate(gg) =
-    PRE gg : GATE
+    PRE gg : GATE & position(gg) = closed
     THEN position(gg) := open
     END;
   close_gate(gg) =
-    PRE gg : GATE
+    PRE gg : GATE & position(gg) = open
     THEN position(gg) := closed
     END;
   pp <-- printquery(gg) =
